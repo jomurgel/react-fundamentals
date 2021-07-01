@@ -8,6 +8,7 @@ function UsernameForm({onSubmitUsername}) {
   // 💰 Make sure to accept the `event` as an argument and call
   // `event.preventDefault()` to prevent the default behavior of form submit
   // events (which refreshes the page).
+  const [error, setError] = React.useState('')
   //
   // 🐨 get the value from the username input (using whichever method
   // you prefer from the options mentioned in the instructions)
@@ -21,15 +22,28 @@ function UsernameForm({onSubmitUsername}) {
     onSubmitUsername(inputRef.current.value);
   }
 
+  const handleUpdate = () => {
+    const isLowerCase = inputRef.current.value === inputRef.current.value.toLowerCase();
+    setError(isLowerCase ? null : 'You made mistakes in life.')
+  }
+
   // 🐨 make sure to associate the label to the input.
   // to do so, set the value of 'htmlFor' prop of the label to the id of input
   return (
     <form onSubmit={handleSubmit}>
+      <div role="alert" style={{color: '#ff0f0f'}}>
+        {error}
+      </div>
       <div>
         <label htmlFor="user_input">Username:</label>
-        <input id="user_input" type="text" ref={inputRef} />
+        <input
+          id="user_input"
+          onChange={handleUpdate}
+          type="text"
+          ref={inputRef}
+        />
       </div>
-      <button type="submit">Submit</button>
+      <button disabled={error} type="submit">Submit</button>
     </form>
   )
 }
